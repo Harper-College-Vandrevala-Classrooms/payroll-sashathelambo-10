@@ -58,11 +58,15 @@ public class Payroll {
 
     // Method to calculate gross pay
     public static double calculateGrossPay(double hoursWorked) {
-        if (hoursWorked <= REGULAR_HOURS) {
-            return hoursWorked * HOURLY_RATE;
+        double hourlyRate = 16.78;
+        double overtimeRate = hourlyRate * 1.5;
+        int regularHours = 40;
+    
+        if (hoursWorked <= regularHours) {
+            return hoursWorked * hourlyRate;
         } else {
-            double overtimeHours = hoursWorked - REGULAR_HOURS;
-            return (REGULAR_HOURS * HOURLY_RATE) + (overtimeHours * OVERTIME_RATE);
+            double overtimeHours = hoursWorked - regularHours;
+            return (regularHours * hourlyRate) + (overtimeHours * overtimeRate);
         }
     }
 
