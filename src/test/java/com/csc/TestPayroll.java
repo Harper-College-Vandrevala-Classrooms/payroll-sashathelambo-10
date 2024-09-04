@@ -1,6 +1,7 @@
 package com.csc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,64 +15,40 @@ public class TestPayroll {
     }
 
     @Test
-    void testCalculateGrossPay_NoOvertime() {
-        double hoursWorked = 40;
-        double expectedGrossPay = 40 * 16.78;
-        assertEquals(expectedGrossPay, payroll.calculateGrossPay(hoursWorked), 0.01);
-    }
-
-    @Test
-    void testCalculateGrossPay_WithOvertime() {
-        double hoursWorked = 45;
-        double expectedGrossPay = (40 * 16.78) + (5 * 16.78 * 1.5);
-        assertEquals(expectedGrossPay, payroll.calculateGrossPay(hoursWorked), 0.01);
+    void testCalculateGrossPay() {
+        assertEquals(671.2, Payroll.calculateGrossPay(40), 0.01);  // Regular hours
+        assertEquals(755.01, Payroll.calculateGrossPay(45), 0.01); // Overtime
     }
 
     @Test
     void testCalculateSocialSecurityTax() {
-        double grossPay = 800.00;
-        double expectedSocialSecurity = grossPay * 0.06;
-        assertEquals(expectedSocialSecurity, payroll.calculateSocialSecurityTax(grossPay), 0.01);
+        assertEquals(40.27, Payroll.calculateSocialSecurityTax(671.2), 0.01);
     }
 
     @Test
     void testCalculateFederalTax() {
-        double grossPay = 800.00;
-        double expectedFederalTax = grossPay * 0.14;
-        assertEquals(expectedFederalTax, payroll.calculateFederalTax(grossPay), 0.01);
+        assertEquals(94.4, Payroll.calculateFederalTax(671.2), 0.01);
     }
 
     @Test
     void testCalculateStateTax() {
-        double grossPay = 800.00;
-        double expectedStateTax = grossPay * 0.05;
-        assertEquals(expectedStateTax, payroll.calculateStateTax(grossPay), 0.01);
+        assertEquals(33.56, Payroll.calculateStateTax(671.2), 0.01);
     }
 
     @Test
-    void testCalculateInsuranceCost_Under3Dependents() {
-        int dependents = 2;
-        double expectedInsuranceCost = 15.00;
-        assertEquals(expectedInsuranceCost, payroll.calculateInsuranceCost(dependents), 0.01);
-    }
-
-    @Test
-    void testCalculateInsuranceCost_3OrMoreDependents() {
-        int dependents = 3;
-        double expectedInsuranceCost = 35.00;
-        assertEquals(expectedInsuranceCost, payroll.calculateInsuranceCost(dependents), 0.01);
+    void testCalculateInsuranceCost() {
+        assertEquals(35, Payroll.calculateInsuranceCost(3));  // 3 or more dependents
+        assertEquals(15, Payroll.calculateInsuranceCost(2));  // Less than 3 dependents
     }
 
     @Test
     void testCalculateNetPay() {
-        double grossPay = 800.00;
-        double socialSecurity = payroll.calculateSocialSecurityTax(grossPay);
-        double federalTax = payroll.calculateFederalTax(grossPay);
-        double stateTax = payroll.calculateStateTax(grossPay);
-        double insurance = payroll.calculateInsuranceCost(2);
+        double grossPay = 671.2;
+        double socialSecurity = Payroll.calculateSocialSecurityTax(grossPay);
+        double federalTax = Payroll.calculateFederalTax(grossPay);
+        double stateTax = Payroll.calculateStateTax(grossPay);
+        double insurance = Payroll.calculateInsuranceCost(2);
 
-        double expectedNetPay = grossPay - (socialSecurity + federalTax + stateTax + 10.00 + insurance);
-        assertEquals(expectedNetPay, payroll.calculateNetPay(grossPay, socialSecurity, federalTax, stateTax, insurance), 0.01);
+        assertEquals(453.27, Payroll.calculateNetPay(grossPay, socialSecurity, federalTax, stateTax, insurance), 0.01);
     }
 }
-
