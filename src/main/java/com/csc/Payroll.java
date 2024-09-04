@@ -4,19 +4,20 @@ import java.util.Scanner;
 
 public class Payroll {
 
+    // Constants for calculations
+    private static final double HOURLY_RATE = 16.78;
+    private static final double OVERTIME_RATE = HOURLY_RATE * 1.5;
+    private static final int REGULAR_HOURS = 40;
+
+    private static final double SOCIAL_SECURITY_TAX_RATE = 0.06;
+    private static final double FEDERAL_INCOME_TAX_RATE = 0.14;
+    private static final double STATE_INCOME_TAX_RATE = 0.05;
+
+    private static final double INSURANCE_UNDER_3_DEP = 15.00;
+    private static final double INSURANCE_3_OR_MORE_DEP = 35.00;
+    private static final double UNION_DUES = 10.00;
+
     public static void main(String[] args) {
-        double hourlyRate = 16.78;
-        double overtimeRate = hourlyRate * 1.5; // Used in calculation
-        int regularHours = 40; // Used in calculation
-
-        double socialSecurityTaxRate = 0.06; // Used in calculation
-        double federalIncomeTaxRate = 0.14; // Used in calculation
-        double stateIncomeTaxRate = 0.05; // Used in calculation
-        double unionDues = 10.00; // Used in calculation
-
-        double insuranceUnder3Dep = 15.00; // Used in calculation
-        double insurance3OrMoreDep = 35.00; // Used in calculation
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to the Payroll Program!");
@@ -28,38 +29,26 @@ public class Payroll {
         int dependents = scanner.nextInt();
 
         // Calculate gross pay
-        double grossPay;
-        if (hoursWorked <= regularHours) {
-            grossPay = hoursWorked * hourlyRate;
-        } else {
-            double overtimeHours = hoursWorked - regularHours;
-            grossPay = (regularHours * hourlyRate) + (overtimeHours * overtimeRate);
-        }
+        double grossPay = calculateGrossPay(hoursWorked);
 
         // Calculate taxes and deductions
-        double socialSecurityTax = grossPay * socialSecurityTaxRate;
-        double federalIncomeTax = grossPay * federalIncomeTaxRate;
-        double stateIncomeTax = grossPay * stateIncomeTaxRate;
+        double socialSecurityTax = calculateSocialSecurityTax(grossPay);
+        double federalIncomeTax = calculateFederalTax(grossPay);
+        double stateIncomeTax = calculateStateTax(grossPay);
 
-        double insuranceCost;
-        if (dependents >= 3) {
-            insuranceCost = insurance3OrMoreDep;
-        } else {
-            insuranceCost = insuranceUnder3Dep;
-        }
+        double insuranceCost = calculateInsuranceCost(dependents);
 
-        double totalDeductions = socialSecurityTax + federalIncomeTax + stateIncomeTax + unionDues + insuranceCost;
-        double netPay = grossPay - totalDeductions;
+        double netPay = calculateNetPay(grossPay, socialSecurityTax, federalIncomeTax, stateIncomeTax, insuranceCost);
 
         // Output results
         System.out.println("\nPayroll Stub:");
         System.out.printf("%10s: %6.2f\n", "Hours", hoursWorked);
-        System.out.printf("%10s: %6.2f $/hr\n", "Rate", hourlyRate);
+        System.out.printf("%10s: %6.2f $/hr\n", "Rate", HOURLY_RATE);
         System.out.printf("%10s: $ %6.2f\n", "Gross", grossPay);
         System.out.printf("%10s: $ %6.2f\n", "SocSec", socialSecurityTax);
         System.out.printf("%10s: $ %6.2f\n", "FedTax", federalIncomeTax);
         System.out.printf("%10s: $ %6.2f\n", "StTax", stateIncomeTax);
-        System.out.printf("%10s: $ %6.2f\n", "Union", unionDues);
+        System.out.printf("%10s: $ %6.2f\n", "Union", UNION_DUES);
         System.out.printf("%10s: $ %6.2f\n", "Ins", insuranceCost);
         System.out.printf("%10s: $ %6.2f\n", "Net", netPay);
 
@@ -67,48 +56,42 @@ public class Payroll {
         scanner.close();
     }
 
-
+    // Method to calculate gross pay
     public static double calculateGrossPay(double hoursWorked) {
-        double hourlyRate = 16.78;
-        double overtimeRate = hourlyRate * 1.5;
-        int regularHours = 40;
-
-        if (hoursWorked <= regularHours) {
-            return hoursWorked * hourlyRate;
+        if (hoursWorked <= REGULAR_HOURS) {
+            return hoursWorked * HOURLY_RATE;
         } else {
-            double overtimeHours = hoursWorked - regularHours;
-            return (regularHours * hourlyRate) + (overtimeHours * overtimeRate);
+            double overtimeHours = hoursWorked - REGULAR_HOURS;
+            return (REGULAR_HOURS * HOURLY_RATE) + (overtimeHours * OVERTIME_RATE);
         }
     }
 
+    // Method to calculate social security tax
     public static double calculateSocialSecurityTax(double grossPay) {
-        double socialSecurityTaxRate = 0.06;
-        return grossPay * socialSecurityTaxRate;
+        return grossPay * SOCIAL_SECURITY_TAX_RATE;
     }
 
+    // Method to calculate federal income tax
     public static double calculateFederalTax(double grossPay) {
-        double federalIncomeTaxRate = 0.14;
-        return grossPay * federalIncomeTaxRate;
+        return grossPay * FEDERAL_INCOME_TAX_RATE;
     }
 
+    // Method to calculate state income tax
     public static double calculateStateTax(double grossPay) {
-        double stateIncomeTaxRate = 0.05;
-        return grossPay * stateIncomeTaxRate;
+        return grossPay * STATE_INCOME_TAX_RATE;
     }
 
+    // Method to calculate insurance cost
     public static double calculateInsuranceCost(int dependents) {
-        double insuranceUnder3Dep = 15.00;
-        double insurance3OrMoreDep = 35.00;
-
         if (dependents >= 3) {
-            return insurance3OrMoreDep;
+            return INSURANCE_3_OR_MORE_DEP;
         } else {
-            return insuranceUnder3Dep;
+            return INSURANCE_UNDER_3_DEP;
         }
     }
 
+    // Method to calculate net pay
     public static double calculateNetPay(double grossPay, double socialSecurity, double federalTax, double stateTax, double insurance) {
-        double unionDues = 10.00;
-        return grossPay - (socialSecurity + federalTax + stateTax + unionDues + insurance);
+        return grossPay - (socialSecurity + federalTax + stateTax + UNION_DUES + insurance);
     }
 }
