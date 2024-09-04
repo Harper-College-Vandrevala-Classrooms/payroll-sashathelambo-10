@@ -6,8 +6,8 @@ public class Payroll {
 
     // Constants for calculations
     private static final double HOURLY_RATE = 16.78;
-    private static final double OVERTIME_RATE = HOURLY_RATE * 1.5;
-    private static final int REGULAR_HOURS = 40;
+   // private static final double OVERTIME_RATE = HOURLY_RATE * 1.5;
+   // private static final int REGULAR_HOURS = 40;
 
     private static final double SOCIAL_SECURITY_TAX_RATE = 0.06;
     private static final double FEDERAL_INCOME_TAX_RATE = 0.14;
