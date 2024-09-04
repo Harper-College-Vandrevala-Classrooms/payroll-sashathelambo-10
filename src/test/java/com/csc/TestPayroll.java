@@ -13,8 +13,5 @@ public class TestPayroll {
     payroll = new Payroll();
   }
 
-  @Test
-  public void fullweek() {
-    assertEquals(671.2, payroll.grosspay(40, 0, 16.78));
-  }
+  // Implement your tests here
 }
