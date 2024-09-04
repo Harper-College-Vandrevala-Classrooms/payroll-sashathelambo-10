@@ -16,8 +16,8 @@ public class TestPayroll {
 
     @Test
     void testCalculateGrossPay() {
-        assertEquals(671.2, Payroll.calculateGrossPay(40), 0.01);  // Regular hours
-        assertEquals(755.01, Payroll.calculateGrossPay(45), 0.01); // Overtime
+        assertEquals(671.20, Payroll.calculateGrossPay(40), 0.01);  // Regular hours
+        assertEquals(797.05, Payroll.calculateGrossPay(45), 0.01);  // Overtime
     }
 
     @Test
