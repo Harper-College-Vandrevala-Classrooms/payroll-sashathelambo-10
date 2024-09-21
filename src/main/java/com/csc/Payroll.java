@@ -49,25 +49,29 @@ public class Payroll {
                 System.out.println("  (4) married with children plan");
                 lifeInsurancePlan = scanner.nextInt();
 
-                lifeInsuranceCost = switch (lifeInsurancePlan) {
-                    case 1 -> NO_PLAN_COST;
-                    case 2 -> SINGLE_PLAN_COST;
-                    case 3 -> MARRIED_PLAN_COST;
-                    case 4 -> {
+                switch (lifeInsurancePlan) {
+                    case 1:
+                        lifeInsuranceCost = NO_PLAN_COST;
+                        break;
+                    case 2:
+                        lifeInsuranceCost = SINGLE_PLAN_COST;
+                        break;
+                    case 3:
+                        lifeInsuranceCost = MARRIED_PLAN_COST;
+                        break;
+                    case 4:
                         if (dependents > 0) {
-                            yield MARRIED_WITH_CHILDREN_PLAN_COST;
+                            lifeInsuranceCost = MARRIED_WITH_CHILDREN_PLAN_COST;
                         } else {
                             System.out.println("Sorry! You need at least one child to select that plan.");
                             lifeInsurancePlan = -1; // Invalid selection
-                            yield 0.00;
                         }
-                    }
-                    default -> {
+                        break;
+                    default:
                         System.out.println("Invalid selection. Please try again.");
                         lifeInsurancePlan = -1; // Invalid selection
-                        yield 0.00;
-                    }
-                };
+                        break;
+                }
             } while (lifeInsurancePlan == -1);
 
             // Calculate gross pay
